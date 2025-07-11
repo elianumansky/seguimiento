@@ -1,1 +1,17 @@
-<a href="/logout">Logout</a> | <a href="/add_student">Añadir alumno</a><ul>{% for s in students %}<li><a href="/student/{{ s.id }}">{{ s.name }}</a></li>{% endfor %}</ul>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Seguimiento Alumnos</title>
+</head>
+<body>
+    <h1>Alumnos</h1>
+    <a href="{{ url_for('nuevo_alumno') }}">Agregar Alumno</a>
+    <ul>
+    {% for id, nombre in alumnos %}
+        <li><a href="{{ url_for('detalle_alumno', alumno_id=id) }}">{{ nombre }}</a></li>
+    {% else %}
+        <li>No hay alumnos</li>
+    {% endfor %}
+    </ul>
+</body>
+</html>

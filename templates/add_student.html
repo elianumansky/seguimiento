@@ -1,1 +1,15 @@
-<form method="post"><input name="name" placeholder="Nombre"><input name="email" placeholder="Email"><input name="interval_days" type="number" placeholder="Cada cuántos días"><button>Guardar</button></form>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nuevo Alumno</title>
+</head>
+<body>
+    <h1>Agregar Alumno</h1>
+    <form method="post">
+        Nombre: <input type="text" name="nombre" required><br>
+        Seguimiento cada (días): <input type="number" name="seguimiento_cada_dias" required><br>
+        <button type="submit">Guardar</button>
+    </form>
+    <a href="{{ url_for('index') }}">Volver</a>
+</body>
+</html>

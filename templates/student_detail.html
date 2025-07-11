@@ -1,1 +1,24 @@
-<h1>{{ student.name }}</h1><form method="post"><textarea name="content"></textarea><button>Agregar informe</button></form><ul>{% for r in reports %}<li>{{ r.date }}: {{ r.content }}</li>{% endfor %}</ul>
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Detalle Alumno</title>
+</head>
+<body>
+    <h1>Alumno: {{ alumno[0] }}</h1>
+    <h2>Informes</h2>
+    <ul>
+    {% for fecha, contenido in informes %}
+        <li><b>{{ fecha }}:</b> {{ contenido }}</li>
+    {% else %}
+        <li>No hay informes</li>
+    {% endfor %}
+    </ul>
+
+    <h3>Agregar Informe</h3>
+    <form method="post">
+        <textarea name="contenido" required rows="4" cols="50"></textarea><br>
+        <button type="submit">Guardar Informe</button>
+    </form>
+    <a href="{{ url_for('index') }}">Volver</a>
+</body>
+</html>
