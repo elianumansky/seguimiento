@@ -93,5 +93,8 @@ def logout():
     return redirect(url_for('login'))
 
 # --- Puerto adaptado para Render ---
-port = int(os.environ.get('PORT', 10000))
-app.run(host='0.0.0.0', port=port)
+if __name__ == '__main__':
+    scheduler.start()
+    port = int(os.environ.get('PORT', 10000))
+    app.run(host='0.0.0.0', port=port)
+
