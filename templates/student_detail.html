@@ -1,0 +1,1 @@
+<h1>{{ student.name }}</h1><form method="post"><textarea name="content"></textarea><button>Agregar informe</button></form><ul>{% for r in reports %}<li>{{ r.date }}: {{ r.content }}</li>{% endfor %}</ul>
