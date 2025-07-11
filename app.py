@@ -28,17 +28,19 @@ def index():
 @app.route('/alumno/nuevo', methods=['GET', 'POST'])
 def nuevo_alumno():
     if request.method == 'POST':
-        nombre = request.form.get('nombre')
-        seguimiento_cada_dias = request.form.get('seguimiento_cada_dias')
-        if not nombre or not seguimiento_cada_dias:
-            return "Faltan datos", 400
+        nombre = request.form['nombre']
+        apellido = request.form['apellido']
+        curso = request.form['curso']
+        seguimiento_cada = request.form['seguimiento_cada']
         conn = sqlite3.connect('seguimiento.db')
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO alumnos (nombre, seguimiento_cada_dias) VALUES (?, ?)", (nombre, int(seguimiento_cada_dias)))
+        cursor.execute('INSERT INTO alumnos (nombre, apellido, curso, seguimiento_cada) VALUES (?, ?, ?, ?)',
+                       (nombre, apellido, curso, seguimiento_cada))
         conn.commit()
         conn.close()
-        return redirect(url_for('index'))
+        return redirect(url_for('alumnos'))
     return render_template('nuevo_alumno.html')
+
 
 @app.route('/alumno/<int:alumno_id>', methods=['GET', 'POST'])
 def detalle_alumno(alumno_id):
@@ -56,6 +58,15 @@ def detalle_alumno(alumno_id):
     informes = cursor.fetchall()
     conn.close()
     return render_template('detalle_alumno.html', alumno=alumno, informes=informes, alumno_id=alumno_id)
+
+@app.route('/alumno/eliminar/<int:alumno_id>', methods=['POST'])
+def eliminar_alumno(alumno_id):
+    conn = sqlite3.connect('seguimiento.db')
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM alumnos WHERE id = ?', (alumno_id,))
+    conn.commit()
+    conn.close()
+    return redirect(url_for('alumnos'))
 
 # Tarea programada y función de envío de mail igual que antes...
 

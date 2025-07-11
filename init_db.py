@@ -1,49 +1,49 @@
 import sqlite3
 
-def init_db():
-    conn = sqlite3.connect('seguimiento.db')
-    cursor = conn.cursor()
+conn = sqlite3.connect('seguimiento.db')
+cursor = conn.cursor()
 
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS usuarios (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        email TEXT NOT NULL,
-        clave TEXT NOT NULL,
-        rol TEXT NOT NULL
-    )
-    """)
+# Crear tabla de usuarios sin UNIQUE en email
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS usuarios (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    email TEXT NOT NULL,
+    clave TEXT NOT NULL,
+    rol TEXT NOT NULL
+)
+''')
 
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS alumnos (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        nombre TEXT NOT NULL,
-        seguimiento_cada_dias INTEGER NOT NULL
-    )
-    """)
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS alumnos (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    nombre TEXT NOT NULL,
+    apellido TEXT NOT NULL,
+    curso TEXT DEFAULT 'Sin asignar',
+    seguimiento_cada INTEGER NOT NULL
+)
+''')
 
-    cursor.execute("""
-    CREATE TABLE IF NOT EXISTS informes (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        alumno_id INTEGER,
-        fecha TEXT NOT NULL,
-        contenido TEXT,
-        FOREIGN KEY (alumno_id) REFERENCES alumnos(id)
-    )
-    """)
+cursor.execute('''
+CREATE TABLE IF NOT EXISTS informes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    alumno_id INTEGER,
+    fecha TEXT,
+    contenido TEXT,
+    FOREIGN KEY (alumno_id) REFERENCES alumnos (id)
+)
+''')
 
-    # Insertar usuarios con el mail común
-    cursor.execute("""
-    INSERT INTO usuarios (email, clave, rol)
-    VALUES ('doecom34@gmail.com', 'clave123', 'asesora')
-    """)
-    cursor.execute("""
-    INSERT INTO usuarios (email, clave, rol)
-    VALUES ('doecom34@gmail.com', 'clave123', 'psicologa')
-    """)
+usuarios = [
+    ('doecom34@gmail.com', '1234', 'asesora'),
+    ('doecom34@gmail.com', '1234', 'psicologa')
+]
 
-    conn.commit()
-    conn.close()
-    print("Base de datos inicializada con usuarios asesora y psicologa en doecom34@gmail.com / clave123")
+for email, clave, rol in usuarios:
+    cursor.execute('SELECT * FROM usuarios WHERE email = ? AND rol = ?', (email, rol))
+    if cursor.fetchone() is None:
+        cursor.execute('INSERT INTO usuarios (email, clave, rol) VALUES (?, ?, ?)', (email, clave, rol))
 
-if __name__ == '__main__':
-    init_db()
+conn.commit()
+conn.close()
+
+print("Base de datos inicializada.")
