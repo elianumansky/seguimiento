@@ -16,6 +16,11 @@ app.config['MAIL_PASSWORD'] = '1234'
 
 mail = Mail(app)
 
+# Ruta raíz para prueba rápida
+@app.route('/')
+def index():
+    return "API Seguimiento de Alumnos funcionando"
+
 # ==============================
 # Funciones auxiliares
 # ==============================
