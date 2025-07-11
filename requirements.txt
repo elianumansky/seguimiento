@@ -1,3 +1,4 @@
 flask
 werkzeug
 schedule
+flask_mail
